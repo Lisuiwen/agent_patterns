@@ -1,13 +1,39 @@
+/**
+ * 探索智能体 (Exploration Agent) / 假设验证智能体
+ * 
+ * 功能概述：
+ * 模拟科学研究流程：提出假设 -> 验证假设 -> 生成报告。
+ * 用于探索性任务，生成创新想法并验证其可行性。
+ * 
+ * 设计要点：
+ * 1. 假设生成：使用 LLM 生成创新性假设
+ * 2. 实验验证：对每个假设进行验证（模拟实验）
+ * 3. 结果累积：收集所有验证结果
+ * 4. 报告生成：基于所有发现生成综合报告
+ * 5. 工作流模式：Start -> Hypothesis -> Experiment -> Report -> End
+ * 
+ * 适用场景：
+ * - 研究探索（提出新研究方向）
+ * - 产品创新（生成并验证新想法）
+ * - 问题诊断（提出可能原因并验证）
+ * 
+ * 扩展方向：
+ * - 实现迭代假设生成（基于验证结果改进假设）
+ * - 添加实验设计节点
+ * - 支持外部数据源验证
+ */
+
 import "dotenv/config";
 import { Annotation, StateGraph, END } from "@langchain/langgraph";
 import { HumanMessage } from "@langchain/core/messages";
 import { ChatOpenAI } from "@langchain/openai";
 
+// 定义状态：领域、假设列表、发现列表、最终报告
 const ExplorationState = Annotation.Root({
-  domain: Annotation<string>,
-  hypotheses: Annotation<string[]>({ reducer: (x, y) => y ?? x, default: () => [] }),
-  findings: Annotation<string[]>({ reducer: (x, y) => x.concat(y), default: () => [] }),
-  finalReport: Annotation<string>,
+  domain: Annotation<string>,                                                      // 探索领域
+  hypotheses: Annotation<string[]>({ reducer: (x, y) => y ?? x, default: () => [] }), // 生成的假设
+  findings: Annotation<string[]>({ reducer: (x, y) => x.concat(y), default: () => [] }), // 验证发现（累积）
+  finalReport: Annotation<string>,                                                 // 最终报告
 });
 
 const CONFIG = {
@@ -15,8 +41,14 @@ const CONFIG = {
   configuration: { baseURL: "https://api.moonshot.cn/v1" },
   modelName: "kimi-k2-turbo-preview",
 };
-const model = new ChatOpenAI({ ...CONFIG, temperature: 0.8 });
+const model = new ChatOpenAI({ ...CONFIG, temperature: 0.8 }); // 高 temperature 鼓励创新性假设
 
+/**
+ * 假设生成节点：针对领域提出创新性假设
+ * 设计要点：
+ * - 使用 JSON 格式返回，便于解析
+ * - 要求假设具有创新性和探索性
+ */
 async function hypothesisNode(state: typeof ExplorationState.State) {
   const { domain } = state;
   console.log(`\n💡 [Explorer] 正在对 "${domain}" 领域提出假设...`);
@@ -28,6 +60,13 @@ async function hypothesisNode(state: typeof ExplorationState.State) {
   return { hypotheses };
 }
 
+/**
+ * 实验节点：验证每个假设
+ * 设计要点：
+ * - 顺序验证每个假设（实际应用可并行）
+ * - 基于 LLM 的知识库进行验证（模拟实验）
+ * - 累积所有发现到 findings 数组
+ */
 async function experimentNode(state: typeof ExplorationState.State) {
   const { hypotheses } = state;
   console.log(`\n🔬 [Scientist] 正在验证假设...`);
@@ -41,6 +80,9 @@ async function experimentNode(state: typeof ExplorationState.State) {
   return { findings: newFindings };
 }
 
+/**
+ * 报告节点：基于所有发现生成综合报告
+ */
 async function reportNode(state: typeof ExplorationState.State) {
   const { domain, findings } = state;
   console.log(`\n📝 [Reporter] 正在撰写发现报告...`);

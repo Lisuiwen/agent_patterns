@@ -5,7 +5,22 @@
   "main": "index.js",
   "scripts": {
     "dev": "tsx",
-    "build": "tsc"
+    "build": "tsc",
+    "chaining": "tsx src/chaining_agent.ts",
+    "collaboration": "tsx src/collaboration_agent.ts",
+    "consistency": "tsx src/consistency_agent.ts",
+    "exploration": "tsx src/exploration_agent.ts",
+    "guardrails": "tsx src/guardrails_agent.ts",
+    "hitl": "tsx src/hitl_agent.ts",
+    "learning": "tsx src/learning_agent.ts",
+    "memory": "tsx src/memory_agent.ts",
+    "parallel": "tsx src/parallel_agent.ts",
+    "planning": "tsx src/planning_agent.ts",
+    "rag": "tsx src/rag_agent.ts",
+    "resource": "tsx src/resource_agent.ts",
+    "robustness": "tsx src/robustness_agent.ts",
+    "routing": "tsx src/routing_agent.ts",
+    "tot": "tsx src/tot_agent.ts"
   },
   "keywords": [
     "langchain",
@@ -26,4 +41,3 @@
     "typescript": "^5.3.0"
   }
 }
-
