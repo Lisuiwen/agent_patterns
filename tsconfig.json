@@ -12,7 +12,7 @@
     "resolveJsonModule": true,
     "moduleResolution": "node"
   },
-  "include": ["*.ts"],
+  "include": ["*.ts", "src/chaining_agent.ts", "src/collaboration_agent.ts", "src/consistency_agent.ts", "src/exploration_agent.ts", "src/guardrails_agent.ts", "src/hitl_agent.ts", "src/learning_agent.ts", "src/memory_agent.ts", "src/parallel_agent.ts", "src/planning_agent.ts", "src/rag_agent.ts", "src/resource_agent.ts", "src/robustness_agent.ts", "src/routing_agent.ts", "src/tot_agent.ts"],
   "exclude": ["node_modules", "dist"]
 }
 
