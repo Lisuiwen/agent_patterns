@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "tsx",
     "build": "tsc",
+    "server": "tsx server/index.ts",
     "chaining": "tsx src/chaining_agent.ts",
     "collaboration": "tsx src/collaboration_agent.ts",
     "consistency": "tsx src/consistency_agent.ts",
@@ -14,13 +15,16 @@
     "hitl": "tsx src/hitl_agent.ts",
     "learning": "tsx src/learning_agent.ts",
     "memory": "tsx src/memory_agent.ts",
+    "multimodal": "tsx src/multimodal_agent.ts",
     "parallel": "tsx src/parallel_agent.ts",
     "planning": "tsx src/planning_agent.ts",
     "rag": "tsx src/rag_agent.ts",
     "resource": "tsx src/resource_agent.ts",
     "robustness": "tsx src/robustness_agent.ts",
     "routing": "tsx src/routing_agent.ts",
-    "tot": "tsx src/tot_agent.ts"
+    "tot": "tsx src/tot_agent.ts",
+    "mcp": "tsx src/mcp_agent.ts",
+    "mcp:server": "tsx server/mcp_stdio_server.ts"
   },
   "keywords": [
     "langchain",
@@ -33,9 +37,11 @@
     "@langchain/core": "^0.3.0",
     "@langchain/langgraph": "^0.2.0",
     "@langchain/openai": "^0.3.0",
-    "dotenv": "^16.4.0"
+    "dotenv": "^16.4.0",
+    "express": "^4.18.2"
   },
   "devDependencies": {
+    "@types/express": "^4.17.21",
     "@types/node": "^20.0.0",
     "tsx": "^4.7.0",
     "typescript": "^5.3.0"

@@ -100,14 +100,35 @@ const workflow = new StateGraph(ResourceState)
 
 const app = workflow.compile();
 
+import * as readline from "readline";
+
 async function main() {
-  const tasks = ["你好，早上好！", "请设计一个基于微服务架构的电商系统，并给出数据库ER图描述"];
+  const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout,
+  });
+
   let totalCost = 0;
-  for (const task of tasks) {
+
+  const promptUser = () =>
+    new Promise<string>((resolve) => {
+      rl.question("\n请输入你的任务（直接回车退出）：", (answer) => {
+        resolve(answer.trim());
+      });
+    });
+
+  while (true) {
+    const task = await promptUser();
+    if (!task) {
+      break;
+    }
     const res = await app.invoke({ task });
-    console.log(`💬 回复: ${res.response.slice(0, 50)}...\n💰 本次花费: ${res.cost}`);
+    console.log(`💬 回复: ${res.response.slice(0, 200)}\n💰 本次花费: ${res.cost}`);
     totalCost += res.cost;
   }
+
   console.log(`\n============== 总花费: ${totalCost} ==============`);
+
+  rl.close();
 }
 main().catch(console.error);

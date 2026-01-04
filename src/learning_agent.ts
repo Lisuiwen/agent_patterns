@@ -146,11 +146,18 @@ async function main() {
     output: process.stdout
   });
 
-  rl.question("请输入你的任务: ", async (task: string) => {
+  // INSERT_YOUR_CODE
+  while (true) {
+    const task: string = await new Promise((resolve) => {
+      rl.question("请输入你的任务（直接回车退出）: ", resolve);
+    });
+    if (!task.trim()) {
+      rl.close();
+      break;
+    }
     const res = await app.invoke({ task });
     console.log("本次回复:", res.result);
     console.log("\n📚 当前经验库状态:", EXPERIENCE_DB);
-    rl.close();
-  });
+  }
 }
 main().catch(console.error);

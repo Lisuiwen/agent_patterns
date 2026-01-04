@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "demo": {
+      "command": "tsx",
+      "args": ["server/mcp_stdio_server.ts"],
+      "env": {}
+    }
+  }
+}
+

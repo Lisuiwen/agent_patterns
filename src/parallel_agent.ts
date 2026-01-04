@@ -93,6 +93,10 @@ const workflow = new StateGraph(ParallelState)
 
 const app = workflow.compile();
 
+// 导出 app 供服务器使用
+export { app };
+
+// 只在直接运行时执行 main 函数
 async function main() {
   const topic = "AI 是否会完全取代程序员";
   console.log(`🚀 开始并行辩论，主题: ${topic}`);
@@ -101,4 +105,8 @@ async function main() {
   console.log("\n====== 🔴 反方 ======"); console.log(result.cons);
   console.log("\n====== 🔗 综合总结 ======"); console.log(result.finalSummary);
 }
-main().catch(console.error);
+
+// 检查是否是直接运行该文件（而非被导入）
+if (require.main === module) {
+  main().catch(console.error);
+}
